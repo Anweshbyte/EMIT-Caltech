@@ -13,22 +13,22 @@ using GeoInterface
 using DataFrames
 using SplitApplyCombine
 
-doi = "10.5067/EMIT/EMITL2ARFL.001"
+doi = "10.5067/EMIT/EMITL2ARFL.001" #Required, you may find the DOI for the dataset here: https://lpdaac.usgs.gov/product_search/?query=emit&view=cards&sort=title"
 cmrurl = "https://cmr.earthdata.nasa.gov/search/"
 doisearch = cmrurl * "collections.json?doi=" * doi
 response1 = HTTP.get(doisearch)
 json_response = JSON.parse(String(response1.body))
 concept_id = json_response["feed"]["entry"][1]["id"]
 
-start_date = DateTime(2022, 9, 3)
-end_date = DateTime(2022, 9, 3, 23, 23, 59)
+start_date = DateTime(2022, 9, 3) #Start date
+end_date = DateTime(2022, 9, 3, 23, 23, 59) #End date
 dt_format = dateformat"yyyy-mm-ddTHH:MM:SSZ"
 start_str = Dates.format(start_date, dt_format)
 end_str = Dates.format(end_date, dt_format)
 temporal_str = start_str * "," * end_str
 
-lon = -62.1123
-lat = -39.89402
+lon = -62.1123 #Longitude
+lat = -39.89402 #Latitude
 point_str = string(lon) * "," * string(lat)
 
 page_num = 0
@@ -73,10 +73,7 @@ while true
     Poly = repeat(df[!, "Poly"], inner=length(df[!, "URL"][1]))
     )
     df[!,"Asset"] = last.(split.(df[:, "URL"], '/'))
-
-    # Reorder the columns if necessary
     df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
     append!(output, df)
 end
-
 CSV.write("EMIT_extract.csv", output)
