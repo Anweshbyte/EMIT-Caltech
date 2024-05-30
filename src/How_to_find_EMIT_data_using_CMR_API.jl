@@ -13,22 +13,26 @@ using GeoInterface
 using DataFrames
 using SplitApplyCombine
 
+# User Parameters =>
+
 doi = "10.5067/EMIT/EMITL2ARFL.001" #Required, you may find the DOI for the dataset here: https://lpdaac.usgs.gov/product_search/?query=emit&view=cards&sort=title"
+start_date = DateTime(2022, 9, 3) #Start date
+end_date = DateTime(2022, 9, 3, 23, 23, 59) #End date
+file_path = "EMIT_extract.csv" # File path where we store the extracted data
+lon = -62.1123 #Longitude
+lat = -39.89402 #Latitude
+
 cmrurl = "https://cmr.earthdata.nasa.gov/search/"
 doisearch = cmrurl * "collections.json?doi=" * doi
 response1 = HTTP.get(doisearch)
 json_response = JSON.parse(String(response1.body))
 concept_id = json_response["feed"]["entry"][1]["id"]
 
-start_date = DateTime(2022, 9, 3) #Start date
-end_date = DateTime(2022, 9, 3, 23, 23, 59) #End date
 dt_format = dateformat"yyyy-mm-ddTHH:MM:SSZ"
 start_str = Dates.format(start_date, dt_format)
 end_str = Dates.format(end_date, dt_format)
 temporal_str = start_str * "," * end_str
 
-lon = -62.1123 #Longitude
-lat = -39.89402 #Latitude
 point_str = string(lon) * "," * string(lat)
 
 page_num = 0
@@ -46,14 +50,14 @@ while true
     )
     granulesearch = cmrurl * "granules.json"
     response = HTTP.post(granulesearch, [], HTTP.Form(cmr_param))
-    granules = JSON.parse(String(response.body))["feed"]["entry"]
+    granules = JSON.parse(String(response.body))["feed"]["entry"] # Returns a dictionary with all the measurements and parameters
     if isempty(granules)  # Exit loop if no granules are returned
         break
     end
     for g in granules
         granule_urls = []
         global cloud_cover = get(g, "cloud_cover", "")
-        if haskey(g, "polygons")
+        if haskey(g, "polygons") # Extract and process the polygons
             polygons = get(g, "polygons", "")
             for poly in polygons
                 terms = split(poly[1])
@@ -76,4 +80,4 @@ while true
     df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
     append!(output, df)
 end
-CSV.write("EMIT_extract.csv", output)
+CSV.write(file_path, output)
