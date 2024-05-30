@@ -78,4 +78,5 @@ while true
     df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
     append!(output, df)
 end
+
 CSV.write("EMIT_extract.csv", output)
