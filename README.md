@@ -3,7 +3,7 @@
 ## Introduction
 The Earth Surface Mineral Dust Source Investigation (EMIT) data can be accessed programmatically using NASA's Common Metadata Repository (CMR) API. The CMR is a metadata system that catalogs Earth Science data and associated metadata records. The CMR API allows users to search through its vast metadata holdings using various parameters and keywords. The following code builds the concept ID:
 
-'''Julia
+'''julia
 doi = "10.5067/EMIT/EMITL2ARFL.001"
 cmrurl = "https://cmr.earthdata.nasa.gov/search/"
 doisearch = cmrurl * "collections.json?doi=" * doi
