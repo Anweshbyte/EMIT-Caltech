@@ -71,13 +71,12 @@ while true
         global granule_urls = [x["href"] for x in g["links"] if occursin("https", x["href"]) && occursin(".nc", x["href"]) && !occursin(".dmrpp", x["href"])]
     end
     df = DataFrame(URL = [granule_urls], CC = cloud_cover, Poly = [granule_poly])
-    df = DataFrame(
-    URL = vcat(df[!, "URL"]...),
-    CC = repeat(df[!, "CC"], inner=length(df[!, "URL"][1])),
-    Poly = repeat(df[!, "Poly"], inner=length(df[!, "URL"][1]))
-    )
+    df = DataFrames.flatten(df,[:URL])
     df[!,"Asset"] = last.(split.(df[:, "URL"], '/'))
     df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
     append!(output, df)
 end
 CSV.write(file_path, output)
+
+
+# 
