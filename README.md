@@ -5,12 +5,13 @@ The Earth Surface Mineral Dust Source Investigation (EMIT) data can be accessed 
 
 '''julia
 
-doi = "10.5067/EMIT/EMITL2ARFL.001"
-cmrurl = "https://cmr.earthdata.nasa.gov/search/"
-doisearch = cmrurl * "collections.json?doi=" * doi
-response1 = HTTP.get(doisearch)
-json_response = JSON.parse(String(response1.body))
-concept_id = json_response["feed"]["entry"][1]["id"]
+        doi = "10.5067/EMIT/EMITL2ARFL.001"
+        cmrurl = "https://cmr.earthdata.nasa.gov/search/"
+        doisearch = cmrurl * "collections.json?doi=" * doi
+        response1 = HTTP.get(doisearch)
+        json_response = JSON.parse(String(response1.body))
+        concept_id = json_response["feed"]["entry"][1]["id"]
+        
 '''
 
 ## Concept ID and DOI
