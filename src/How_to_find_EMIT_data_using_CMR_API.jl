@@ -9,7 +9,6 @@ using IterTools
 using GeometryBasics
 using Shapefile
 using GeoJSON
-# using GeometryTypes
 using GeoInterface
 using DataFrames
 using SplitApplyCombine
