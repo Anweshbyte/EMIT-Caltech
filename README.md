@@ -23,8 +23,9 @@ The CMR API has a limit of 2000 results per page and a maximum of 1 million gran
 A 'DataFrame` can be used to store the download URLs and geometries of each file. The EMIT L2A Reflectance and Uncertainty and Mask collection contains three assets per granule: reflectance, reflectance uncertainty, and masks. By printing the list, you can see the three assets corresponding to a single polygon.
 
 ## EMIT product naming conventions
-Level 1 and 2 data product filenames will adhere to the following naming convention: EMIT_L1B_RAD_001_20220101T083015_2200105_007
+Level 1 and 2 data product filenames will adhere to the following naming convention:
 
+    EMIT_L1B_RAD_001_20220101T083015_2200105_007
     EMIT – Sensor
     L1B – Product Level
     RAD – Product Type
