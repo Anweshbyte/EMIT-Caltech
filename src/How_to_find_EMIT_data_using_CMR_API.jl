@@ -17,7 +17,7 @@ using SplitApplyCombine
 
 doi = "10.5067/EMIT/EMITL2ARFL.001" #Required, you may find the DOI for the dataset here: https://lpdaac.usgs.gov/product_search/?query=emit&view=cards&sort=title"
 start_date = DateTime(2022, 9, 3) #Start date
-end_date = DateTime(2022, 9, 3, 23, 23, 59) #End date
+end_date = DateTime(2024, 3, 9, 23, 23, 59) #End date
 file_path = "EMIT_extract.csv" # File path where we store the extracted data
 lon = -62.1123 #Longitude
 lat = -39.89402 #Latitude
@@ -69,14 +69,11 @@ while true
             end
         end
         global granule_urls = [x["href"] for x in g["links"] if occursin("https", x["href"]) && occursin(".nc", x["href"]) && !occursin(".dmrpp", x["href"])]
+        df = DataFrame(URL = [granule_urls], CC = cloud_cover, Poly = [granule_poly])
+        df = DataFrames.flatten(df,[:URL])
+        df[!,"Asset"] = last.(split.(df[:, "URL"], '/'))
+        df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
+        append!(output, df)
     end
-    df = DataFrame(URL = [granule_urls], CC = cloud_cover, Poly = [granule_poly])
-    df = DataFrames.flatten(df,[:URL])
-    df[!,"Asset"] = last.(split.(df[:, "URL"], '/'))
-    df = df[:, ["Asset", setdiff(names(df), ["Asset"])...]]
-    append!(output, df)
 end
 CSV.write(file_path, output)
-
-
-# 
