@@ -15,12 +15,12 @@ using SplitApplyCombine
 
 # User Parameters =>
 
-doi = "10.5067/EMIT/EMITL2ARFL.001" #Required, you may find the DOI for the dataset here: https://lpdaac.usgs.gov/product_search/?query=emit&view=cards&sort=title"
+doi = "10.5067/EMIT/EMITL1BRAD.001" #Required, you may find the DOI for the dataset here: https://lpdaac.usgs.gov/product_search/?query=emit&view=cards&sort=title"
 start_date = DateTime(2022, 9, 3) #Start date
 end_date = DateTime(2024, 3, 9, 23, 23, 59) #End date
 file_path = "EMIT_extract.csv" # File path where we store the extracted data
-lon = -62.1123 #Longitude
-lat = -39.89402 #Latitude
+lon = -118.4 #Longitude
+lat = 34.3 #Latitude
 
 cmrurl = "https://cmr.earthdata.nasa.gov/search/"
 doisearch = cmrurl * "collections.json?doi=" * doi
