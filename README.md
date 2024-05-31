@@ -21,3 +21,19 @@ The CMR API has a limit of 2000 results per page and a maximum of 1 million gran
 
 ## Creating a DataFrame with the Resulting Links
 A 'DataFrame` can be used to store the download URLs and geometries of each file. The EMIT L2A Reflectance and Uncertainty and Mask collection contains three assets per granule: reflectance, reflectance uncertainty, and masks. By printing the list, you can see the three assets corresponding to a single polygon.
+
+## EMIT product naming conventions
+Level 1 and 2 data product filenames will adhere to the following naming convention: EMIT_L1B_RAD_001_20220101T083015_2200105_007
+
+'''
+EMIT – Sensor
+L1B – Product Level
+RAD – Product Type
+001 – Product Version Number
+20220101 – Date of Acquisition (YYYYMMDD)
+T083015 – Time of Acquisition (HHMMSS) (in UTC)
+2200105 – Orbit identification number (YYDOYNN), where NN is a two-digit incrementing orbit number for each day
+007 – Scene identification number
+'''
+
+An orbit is referred to as a scene and can cover thousands of kilometers down-track. For the sake of convenience, each scene is broken into granules of 1280 down-track lines which can be reassembled seamlessly into scenes. The last granule can be extended up to 2559 lines to prevent having a granule with very few lines.
