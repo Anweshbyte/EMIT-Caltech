@@ -1,8 +1,9 @@
-using Pkg
-# Pkg.add("Plotly")
-# Pkg.add("NCDatasets")
 using NCDatasets
+using Plots
 
-nc_file_path = "/Users/arpitasen/Desktop/Sanghavi/Data/EMIT_L2A_RFL_001_20220903T163129_2224611_012.nc"
-ncfile = NCDataset(nc_file_path, "r")
-ref = ncfile["reflectance"]
+ds = Dataset("/Users/arpitasen/Desktop/Sanghavi/Data/EMIT_L1B_RAD_001_20231026T175210_2329912_009.nc", "r")
+radiance = ds["radiance"][:]
+point_radiance = radiance[:, 500, 500]
+close(ds)
+bands = 1:length(point_radiance)
+plot(bands, point_radiance, xlabel="Bands", ylabel="Radiance", title="Radiance for point (500, 500) across all bands")
