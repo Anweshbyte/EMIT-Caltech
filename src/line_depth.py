@@ -20,14 +20,14 @@ def calculate_line_depth(data):
 
 line_depths = [calculate_line_depth(normalized_data[:, :, i]) for i in range(normalized_data.shape[2])]
 num_bands = normalized_data.shape[2]
-fig, axes = plt.subplots(1, num_bands, figsize=(20, 8))
+fig, axes = plt.subplots(1, 3, figsize=(20, 8))
 
 max_line_depth = np.max([np.max(line_depth) for line_depth in line_depths])
 min_line_depth = np.min([np.min(line_depth) for line_depth in line_depths])
 print(f"Maximum Line Depth: {max_line_depth}")
 print(f"Minimum Line Depth: {min_line_depth}")
 
-for band_index in range(num_bands):
+for band_index in range(3):
     ax = axes[band_index]
     im = ax.imshow(line_depths[band_index], cmap='viridis', vmin=0.5, vmax=1.0)
     ax.set_title(f'Band {start_band + band_index}')

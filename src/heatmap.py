@@ -12,14 +12,17 @@ num_bands = 285
 band_indices = np.arange(num_bands)
 wavelengths = start_wavelength + (end_wavelength - start_wavelength) / (num_bands - 1) * band_indices
 
-radiance_selected_bands = radiance[500, 500, 270:285]  # Bands 48 to 54 are indexed as 47 to 53
-wavelengths_selected_bands = wavelengths[270:285]
+radiance_selected_bands = radiance[500, 500, 202:229]  # Bands 48 to 54 are indexed as 47 to 53
+wavelengths_selected_bands = wavelengths[202:229]
 
-plt.figure(figsize=(10, 6))
-plt.plot(wavelengths_selected_bands, radiance_selected_bands, marker='o')
-plt.xlabel('Wavelength (nm)')
-plt.ylabel('Radiance')
-plt.title('Radiance Values for Wavelengths 48 to 54 at Point (500, 500)')
-plt.grid(True)
+plt.figure(figsize=(12, 8)) 
+plt.plot(wavelengths_selected_bands, radiance_selected_bands, linewidth=2, markersize=5, linestyle='-', color='b')
+plt.xlabel('Wavelength (nm)', fontsize=14, fontweight='bold', color='darkblue')
+plt.ylabel('Radiance', fontsize=14, fontweight='bold', color='darkblue')
+plt.title('Absorption Spectrum CO2', fontsize=16, fontweight='bold', color='red')
+plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+plt.minorticks_on()
+plt.legend(['Radiance'], loc='best', fontsize=12)
+plt.tick_params(axis='both', which='major', labelsize=12, direction='in', length=6, width=2)
+plt.tick_params(axis='both', which='minor', labelsize=10, direction='in', length=3, width=1)
 plt.show()
-nc.close()
