@@ -29,3 +29,4 @@ plt.legend(loc='best', fontsize=12)
 plt.tick_params(axis='both', which='major', labelsize=12, direction='in', length=6, width=2)
 plt.tick_params(axis='both', which='minor', labelsize=10, direction='in', length=3, width=1)
 plt.show()
+
