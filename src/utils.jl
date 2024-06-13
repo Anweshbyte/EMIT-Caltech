@@ -1,8 +1,7 @@
 using NCDatasets
-using Plots
 using Statistics
 
-function plot_normalized_radiance(file_path::AbstractString, pixel_x::Int, pixel_y::Int, start_band::Int, end_band::Int)
+function radiance_dep(file_path::AbstractString, pixel_x::Int, pixel_y::Int, start_band::Int, end_band::Int)
     ds = Dataset(file_path, "r")
     radiance = ds["radiance"][:]
     point_radiance = radiance[:, pixel_x, pixel_y]
@@ -22,7 +21,5 @@ function plot_normalized_radiance(file_path::AbstractString, pixel_x::Int, pixel
         normalized_radiance[i] = point_radiance[i] / mean_max_values
     end
     
-    bands_to_plot = start_band:end_band
-    plot(bands_to_plot, normalized_radiance[bands_to_plot], xlabel="Bands", ylabel="Normalized Radiance", 
-         title="Normalized Radiance for Bands $start_band-$end_band")
+    return normalized_radiance[start_band:end_band]
 end
