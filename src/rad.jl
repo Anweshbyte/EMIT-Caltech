@@ -1,4 +1,6 @@
+using NCDatasets
 using Plots
+using AWSS3
 
 function band_to_wavelength(band_number::Int)
     min_wavelength = 381
@@ -18,44 +20,28 @@ file_paths = [
     "/Users/arpitasen/Desktop/Sanghavi/Data/EMIT_L1B_RAD_001_20231026T175222_2329912_010.nc",
     "/Users/arpitasen/Desktop/Sanghavi/Data/EMIT_L1B_RAD_001_20231222T191915_2335613_007.nc",
 ]
+
 pixel_x = 1050
 pixel_y = 500
-start_band = 49
-end_band = 53
+band_start = 49
+band_end = 54
+bands = band_start:band_end
 
-normalized_radiances = []
-
-# Example function to simulate radiance_dep function (replace with actual function)
-function radiance_dep(file_path, pixel_x, pixel_y, start_band, end_band)
-    return rand(end_band - start_band + 1)  # Example random data
-end
-
-# Extract dates from file names
 file_dates = [match(r"(\d{8})", file_path).match for file_path in file_paths]
-
-# Plot initialization
 plot()
 
-# Iterate over each file path
 for (i, file_path) in enumerate(file_paths)
-    # Compute normalized radiance (replace with actual function call)
-    norm_radiance = radiance_dep(file_path, pixel_x, pixel_y, start_band, end_band)
-    push!(normalized_radiances, norm_radiance)
-    
-    # Calculate wavelengths for current file
-    band_numbers = start_band:end_band
+    ds = Dataset(file_path, "r")
+    radiance = ds["radiance"][:]
+    radiance_values = radiance[band_start:band_end, pixel_x, pixel_y]
+    close(ds)
+    band_numbers = band_start:band_end
     wavelengths = map(band_to_wavelength, band_numbers)
-    
-    # Extract date from file name
     file_date = file_dates[i]
-    
-    # Plot normalized radiance with date as label
-    plot!(wavelengths, norm_radiance, label="$file_date")
+    plot!(wavelengths, radiance_values, label="$file_date", marker=:o)
 end
 
-# Customize plot labels and save the plot
-xlabel!("Wavelength (nm)")
-ylabel!("Normalized Radiance")
-title!("Normalized Radiance for Multiple Files")
-plot!(size=(600, 1000), yticks=:auto)
-savefig("/Users/arpitasen/Desktop/Sanghavi/Data/normalized_radiances_plot.png")
+xlabel!("Band")
+ylabel!("Radiance")
+title!("Radiance")
+savefig("/Users/arpitasen/Desktop/Sanghavi/Data/rad.png")
