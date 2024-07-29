@@ -5,6 +5,9 @@ import pandas as pd
 import datetime as dt
 import geopandas
 from shapely.geometry import MultiPolygon, Polygon, box
+import keyring
+
+# Retrieve credentials
 
 # Define the custom session class
 class SessionWithHeaderRedirection(requests.Session):
@@ -48,7 +51,7 @@ def download_file(session, url, save_dir):
     except Exception as e:
         print(f"Error for {url}: {e}")
 
-doi = '10.5067/EMIT/EMITL1BRAD.001'# EMIT L2A Reflectance
+doi = '10.5067/EMIT/EMITL1BRAD.001'
 
 # CMR API base url
 cmrurl='https://cmr.earthdata.nasa.gov/search/' 
@@ -130,9 +133,9 @@ cmr_results_df.insert(0,'asset_name', cmr_results_df.URL.str.split('/',n=-1).str
 
 cmr_results_df.to_csv('data/EMIT_extract.csv', index=False)
 
-# User credentials
-username = "anweshbyte"
-password = "####"
+username = keyring.get_password('emit_service', 'username')
+password = keyring.get_password('emit_service', 'password')
+
 
 # Create a session with the user credentials
 session = SessionWithHeaderRedirection(username, password)
