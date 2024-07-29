@@ -138,8 +138,8 @@ password = "####"
 session = SessionWithHeaderRedirection(username, password)
 
 # Path to the CSV file and the directory to save files
-csv_file_path = "/Users/arpitasen/Desktop/EMIT-Caltech/data/EMIT_extract.csv"  # Update this to the path of your CSV file
-save_directory = "/Users/arpitasen/Desktop/EMIT-Caltech/rads"  # Update this to your desired directory
+csv_file_path = "data/EMIT_extract.csv"  # Update this to the path of your CSV file
+save_directory = "rads"  # Update this to your desired directory
 
 # Create the directory if it does not exist
 os.makedirs(save_directory, exist_ok=True)

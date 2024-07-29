@@ -6,7 +6,7 @@ using Missings
 using Glob
 
 # Directory containing NetCDF files
-directory_path = "/Users/arpitasen/Desktop/EMIT-Caltech/rads"
+directory_path = "rads"
 
 # Get a list of all NetCDF files in the directory
 file_paths = glob("*.nc", directory_path)
