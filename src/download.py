@@ -7,7 +7,11 @@ import geopandas
 from shapely.geometry import MultiPolygon, Polygon, box
 import keyring
 
-# Retrieve credentials
+# Params =>
+lat, lon = 34.0, -118.25
+# Temporal Bound - Year, month, day. Hour, minutes, and seconds (ZULU) can also be included 
+start_date = dt.datetime(2022, 9, 3)
+end_date = dt.datetime(2024, 3, 9, 23, 23, 59)
 
 # Define the custom session class
 class SessionWithHeaderRedirection(requests.Session):
@@ -60,9 +64,7 @@ doisearch = cmrurl + 'collections.json?doi=' + doi
 concept_id = requests.get(doisearch).json()['feed']['entry'][0]['id']
 print(concept_id)
 
-# Temporal Bound - Year, month, day. Hour, minutes, and seconds (ZULU) can also be included 
-start_date = dt.datetime(2022, 9, 3)
-end_date = dt.datetime(2024, 3, 9, 23, 23, 59)
+
 
 # CMR formatted start and end times
 dt_format = '%Y-%m-%dT%H:%M:%SZ'
@@ -71,8 +73,7 @@ print(temporal_str)
 
 # Search using a Point
 
-lon = -118.8
-lat = 34
+
 point_str = str(lon) +','+ str(lat)
 
 page_num = 1
