@@ -5,6 +5,9 @@ using Statistics
 using Missings
 using Glob
 
+# Define the target latitude and longitude
+target_lat_lon = [34.0, -118.25]
+
 # Directory containing NetCDF files
 directory_path = "rads"
 
@@ -20,9 +23,6 @@ function latlon_to_cartesian(lat, lon, radius=6371.0)
     z = radius * sin(lat_rad)
     return x, y, z
 end
-
-# Define the target latitude and longitude
-target_lat_lon = [34.0, -118.25]
 
 # Convert the target location to Cartesian coordinates
 target_x, target_y, target_z = latlon_to_cartesian(target_lat_lon[1], target_lat_lon[2])
