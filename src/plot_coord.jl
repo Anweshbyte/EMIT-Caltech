@@ -3,13 +3,13 @@ using LinearAlgebra
 using Plots
 using Statistics
 using Missings
-using Glob
 
-# Directory containing NetCDF files
-directory_path = "/Users/arpitasen/Desktop/EMIT-Caltech/rads"
-
-# Get a list of all NetCDF files in the directory
-file_paths = glob("*.nc", directory_path)
+file_path = "/Users/arpitasen/Desktop/Sanghavi/Data/EMIT_L1B_RAD_001_20231222T191915_2335613_007.nc"
+ds = Dataset(file_path, "r")
+radiance = ds["radiance"][:]
+lon = ds.group["location"]["lon"][:]
+lat = ds.group["location"]["lat"][:]
+close(ds)
 
 # Function to convert latitude and longitude to Cartesian coordinates
 function latlon_to_cartesian(lat, lon, radius=6371.0)
@@ -27,24 +27,10 @@ target_lat_lon = [34.0, -118.25]
 # Convert the target location to Cartesian coordinates
 target_x, target_y, target_z = latlon_to_cartesian(target_lat_lon[1], target_lat_lon[2])
 
-# Initialize a 2D array to store distances
-distance_matrix = []
-
-# Initialize variables to store latitude and longitude data
-lat = nothing
-lon = nothing
-
-# Process the first file to get the latitude and longitude data
-first_file_path = file_paths[1]
-ds = Dataset(first_file_path, "r")
-lat = ds.group["location"]["lat"][:]
-lon = ds.group["location"]["lon"][:]
-close(ds)
-
 # Get the dimensions of the latitude and longitude arrays
 n_rows, n_cols = size(lat)
 
-# Initialize the distance matrix with the appropriate size
+# Initialize a 2D array to store distances
 distance_matrix = zeros(Float64, n_rows, n_cols)
 
 # Convert all locations to Cartesian coordinates and calculate distances
@@ -63,7 +49,8 @@ pixel_y = closest_index[2]
 start_band = 49
 end_band = 55
 
-# Function to compute normalized radiance for a given file and pixel
+normalized_radiances = []
+
 function radiance_dep(file_path::AbstractString, pixel_x::Int, pixel_y::Int, start_band::Int, end_band::Int)
     ds = Dataset(file_path, "r")
     radiance = ds["radiance"][:]
@@ -93,15 +80,14 @@ file_dates = [match(r"(\d{8})", file_path).match for file_path in file_paths]
 plot()
 
 # Iterate over each file path
-normalized_radiances = []
 for (i, file_path) in enumerate(file_paths)
-    # Compute normalized radiance
+    # Compute normalized radiance (replace with actual function call)
     norm_radiance = radiance_dep(file_path, pixel_x, pixel_y, start_band, end_band)
     push!(normalized_radiances, norm_radiance)
     
     # Calculate wavelengths for current file
     band_numbers = start_band:end_band
-    wavelengths = map(x -> x, band_numbers)  # Replace with actual function if needed
+    wavelengths = map(band_to_wavelength, band_numbers)
     
     # Extract date from file name
     file_date = file_dates[i]
@@ -115,4 +101,6 @@ xlabel!("Wavelength (nm)")
 ylabel!("Normalized Radiance")
 title!("Normalized Radiance for Multiple Files")
 plot!(size=(600, 1000), yticks=:auto)
-savefig("/Users/arpitasen/Desktop/EMIT-Caltech/data/normalized_radiances_plot_new.png")
+# # savefig("/Users/arpitasen/Desktop/Sanghavi/Data/normalized_radiances_plot_new.png")
+
+
