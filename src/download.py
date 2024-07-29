@@ -132,7 +132,7 @@ cmr_results_df.to_csv('data/EMIT_extract.csv', index=False)
 
 # User credentials
 username = "anweshbyte"
-password = "Beckalacious@23"
+password = "####"
 
 # Create a session with the user credentials
 session = SessionWithHeaderRedirection(username, password)
